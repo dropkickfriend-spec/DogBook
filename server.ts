@@ -16,14 +16,41 @@ async function startServer() {
 
   app.get('/api/auth/facebook/url', (req, res) => {
     const redirectUri = `${req.protocol}://${req.get('host')}/auth/callback`;
+    if (!process.env.FACEBOOK_CLIENT_ID) {
+      // Return a simulated oauth page for preview purposes when no client ID is set
+      return res.json({ url: `${req.protocol}://${req.get('host')}/api/auth/facebook/mock?redirect_uri=${encodeURIComponent(redirectUri)}` });
+    }
     const params = new URLSearchParams({
-      client_id: process.env.FACEBOOK_CLIENT_ID || 'placeholder_client_id',
+      client_id: process.env.FACEBOOK_CLIENT_ID,
       redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'public_profile',
     });
-    
     res.json({ url: `https://www.facebook.com/v19.0/dialog/oauth?${params.toString()}` });
+  });
+
+  app.get('/api/auth/facebook/mock', (req, res) => {
+    const redirectUri = req.query.redirect_uri as string;
+    res.send(`
+      <html>
+        <head>
+          <style>
+            body { font-family: sans-serif; background: #f0f2f5; display: flex; align-items: center; justify-center: center; height: 100vh; margin: 0; }
+            .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 400px; max-width: 90%; margin: auto; text-align: center; }
+            .btn { background: #0866ff; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 20px; width: 100%; }
+            .btn:hover { background: #005ce6; }
+            h2 { color: #1c1e21; margin-top: 0; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>Simulate Facebook Login</h2>
+            <p>Because no <b>FACEBOOK_CLIENT_ID</b> is set in your environment variables, we are intercepting the login flow to simulate success.</p>
+            <button class="btn" onclick="window.location.href='${redirectUri}?code=mock_oauth_code'">Continue as User</button>
+          </div>
+        </body>
+      </html>
+    `);
   });
 
   app.get('/auth/callback', (req, res) => {

@@ -132,58 +132,76 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen bg-amber-50 font-sans flex flex-col overflow-hidden text-slate-800">
+    <div className="h-screen bg-[#f0f2f5] font-sans flex flex-col overflow-hidden text-[#050505]">
       {/* Top Navigation Bar */}
-      <header className="h-20 bg-white border-b-4 border-amber-200 px-4 sm:px-8 flex items-center justify-between shrink-0 relative z-20">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
-            <svg className="w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12,4.5C10.5,4.5 9.2,5.2 8.4,6.2C7,5.5 5.2,5.8 4.2,7C3,8.4 3.4,10.5 4.8,11.5C4.2,12.7 4.2,14 4.8,15.2C5.5,16.5 7,17 8.2,16.5C9.2,18 10.5,18.8 12,18.8C13.5,18.8 14.8,18 15.8,16.5C17,17 18.5,16.5 19.2,15.2C19.8,14 19.8,12.7 19.2,11.5C20.6,10.5 21,8.4 19.8,7C18.8,5.8 17,5.5 15.6,6.2C14.8,5.2 13.5,4.5 12,4.5Z" />
-              <path d="M7.5,12A1.5,1.5 0 1,1 7.5,9A1.5,1.5 0 1,1 7.5,12ZM16.5,12A1.5,1.5 0 1,1 16.5,9A1.5,1.5 0 1,1 16.5,12ZM10.5,14A1.5,1.5 0 1,1 10.5,11A1.5,1.5 0 1,1 10.5,14ZM13.5,14A1.5,1.5 0 1,1 13.5,11A1.5,1.5 0 1,1 13.5,14Z" fill="white" />
-            </svg>
+      <header className="h-[56px] bg-white border-b border-gray-200 px-4 flex items-center justify-between shrink-0 relative z-20 shadow-sm">
+        {/* Left: Logo & Search */}
+        <div className="flex items-center gap-2 w-[300px]">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('feed')}>
+            <div className="w-10 h-10 bg-[#0866ff] rounded-full flex items-center justify-center text-white shrink-0">
+               <span className="font-bold text-2xl font-serif ml-0.5">d</span>
+            </div>
+            <h1 className="text-xl font-bold tracking-tight text-[#0866ff] hidden lg:block">DogBook</h1>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-orange-600 hidden sm:block">Pawfolio</h1>
-        </div>
-        
-        <div className="flex-1 max-w-md mx-6 hidden md:block">
-          <div className="relative">
-            <input type="text" placeholder="Search for fluffy friends..." className="w-full bg-slate-100 border-2 border-slate-200 rounded-full py-2 sm:py-3 px-6 focus:outline-none focus:border-orange-400 font-sans" />
-            <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+          <div className="relative hidden md:block w-60 xl:w-48">
+            <input type="text" placeholder="Search DogBook" className="w-full bg-[#f0f2f5] border-none rounded-full py-2 px-6 pl-10 focus:outline-none focus:ring-2 focus:ring-[#0866ff] font-sans text-sm" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
           </div>
         </div>
         
-        <div className="flex items-center gap-3 sm:gap-4">
-          <button className="p-2 sm:p-3 bg-teal-100 text-teal-700 rounded-full hover:bg-teal-200 transition-colors">
-            <Bell className="w-5 h-5 sm:w-6 sm:h-6" />
+        {/* Center: Navigation Tabs */}
+        <div className="hidden sm:flex items-center justify-center flex-1 max-w-[600px] h-full gap-2">
+           <button onClick={() => setActiveTab('feed')} className={`flex-1 h-full flex items-center justify-center relative hover:bg-gray-100 rounded-lg mx-1 transition-colors ${activeTab === 'feed' ? 'text-[#0866ff]' : 'text-gray-500'}`}>
+              <Home className={`w-7 h-7 ${activeTab === 'feed' ? 'fill-current' : ''}`} />
+              {activeTab === 'feed' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0866ff] rounded-t-md" />}
+           </button>
+           <button onClick={() => setActiveTab('lineage')} className={`flex-1 h-full flex items-center justify-center relative hover:bg-gray-100 rounded-lg mx-1 transition-colors ${activeTab === 'lineage' ? 'text-[#0866ff]' : 'text-gray-500'}`}>
+              <Network className={`w-7 h-7 ${activeTab === 'lineage' ? 'fill-current' : ''}`} />
+              {activeTab === 'lineage' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0866ff] rounded-t-md" />}
+           </button>
+           <button onClick={() => viewProfile(CURRENT_USER.id)} className={`flex-1 h-full flex items-center justify-center relative hover:bg-gray-100 rounded-lg mx-1 transition-colors ${activeTab === 'profile' && viewingUserId === CURRENT_USER.id ? 'text-[#0866ff]' : 'text-gray-500'}`}>
+              <User className={`w-7 h-7 ${activeTab === 'profile' && viewingUserId === CURRENT_USER.id ? 'fill-current' : ''}`} />
+              {activeTab === 'profile' && viewingUserId === CURRENT_USER.id && <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0866ff] rounded-t-md" />}
+           </button>
+           <button className="flex-1 h-full flex items-center justify-center relative hover:bg-gray-100 rounded-lg mx-1 transition-colors text-gray-500 hidden md:flex">
+              <Bookmark className="w-7 h-7" />
+           </button>
+        </div>
+        
+        {/* Right: User actions */}
+        <div className="flex items-center gap-2 w-[300px] justify-end">
+          <button className="w-10 h-10 bg-gray-200 text-gray-900 rounded-full hover:bg-gray-300 transition-colors flex items-center justify-center">
+            <Settings className="w-5 h-5" />
           </button>
-          <div onClick={() => viewProfile(CURRENT_USER.id)} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-orange-400 overflow-hidden shadow-md shrink-0 cursor-pointer">
+          <button className="w-10 h-10 bg-gray-200 text-gray-900 rounded-full hover:bg-gray-300 transition-colors flex items-center justify-center">
+            <Bell className="w-5 h-5" />
+          </button>
+          <div onClick={() => viewProfile(CURRENT_USER.id)} className="w-10 h-10 rounded-full overflow-hidden shadow-sm shrink-0 cursor-pointer border border-gray-200 hover:opacity-80 transition-opacity">
             <img src={CURRENT_USER.avatarUrl} alt="Profile" className="w-full h-full object-cover" />
           </div>
         </div>
       </header>
 
-      <main className="flex-1 flex gap-6 p-4 sm:p-6 overflow-hidden max-w-[1440px] mx-auto w-full">
-        {/* Left Sidebar: Navigation */}
-        <nav className="hidden sm:flex w-20 xl:w-64 flex-col gap-2 shrink-0 overflow-y-auto pb-6">
-          <NavItem icon={<Home className="w-6 h-6" />} label="Home" active={activeTab === 'feed'} onClick={() => setActiveTab('feed')} />
-          <NavItem icon={<Search className="w-6 h-6" />} label="Explore" />
-          <NavItem icon={<Network className="w-6 h-6" />} label="Lineage & Breeding" active={activeTab === 'lineage'} onClick={() => setActiveTab('lineage')} />
-          <NavItem icon={<User className="w-6 h-6" />} label="Profile & Traits" active={activeTab === 'profile' && viewingUserId === CURRENT_USER.id} onClick={() => viewProfile(CURRENT_USER.id)} />
-          <NavItem icon={<Bell className="w-6 h-6" />} label="Playgroups" />
-          <NavItem icon={<Mail className="w-6 h-6" />} label="Vet Finder" />
-          <NavItem icon={<Bookmark className="w-6 h-6" />} label="Barketplace" />
-          
-          <div className="hidden xl:block mt-auto p-6 bg-teal-500 rounded-3xl text-white shadow-xl relative overflow-hidden shrink-0">
-            <p className="relative z-10 font-bold text-lg">Go Premium!</p>
-            <p className="relative z-10 text-xs opacity-90 mb-3 mt-1">Unlimited treat coupons and no ads.</p>
-            <button className="relative z-10 bg-white text-teal-600 font-black px-4 py-2 rounded-full text-sm hover:bg-teal-50 transition-colors">UPGRADE</button>
-            <div className="absolute -right-4 -bottom-4 text-6xl opacity-20 rotate-12 select-none">🦴</div>
+      <main className="flex-1 flex overflow-hidden w-full">
+        {/* Left Sidebar: Navigation & Shortcuts */}
+        <div className="hidden xl:flex w-[320px] lg:w-[360px] flex-col overflow-y-auto p-4 shrink-0 hover:overflow-y-scroll" style={{ scrollbarWidth: 'thin' }}>
+          <NavItem icon={<div className="w-8 h-8 rounded-full overflow-hidden"><img src={CURRENT_USER.avatarUrl} className="w-full h-full object-cover"/></div>} label={CURRENT_USER.name} active={activeTab === 'profile' && viewingUserId === CURRENT_USER.id} onClick={() => viewProfile(CURRENT_USER.id)} />
+          <NavItem icon={<Search className="w-7 h-7 text-[#050505]" />} label="Explore" />
+          <NavItem icon={<Network className="w-7 h-7 text-[#0866ff]" />} label="Evolution & Lineage" active={activeTab === 'lineage'} onClick={() => setActiveTab('lineage')} />
+          <NavItem icon={<Bell className="w-7 h-7 text-[#050505]" />} label="Playgroups" />
+          <NavItem icon={<Mail className="w-7 h-7 text-[#050505]" />} label="Vet Finder" />
+          <NavItem icon={<Bookmark className="w-7 h-7 text-[#050505]" />} label="Barketplace" />
+          <div className="border-b border-gray-300 w-full my-3" />
+          <h3 className="text-gray-500 font-semibold px-2 mb-2 text-lg">Your Shortcuts</h3>
+          <div className="px-2 py-2 hover:bg-gray-200 rounded-lg cursor-pointer flex items-center gap-3">
+             <div className="w-8 h-8 rounded-lg bg-orange-400"></div>
+             <span className="font-semibold text-[15px]">Golden Retriever Owners</span>
           </div>
-        </nav>
+        </div>
 
-        {/* Central Feed */}
-        <div className="flex-1 flex flex-col gap-6 overflow-y-auto pb-24 sm:pb-6 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          
+        {/* Central Content */}
+        <div className="flex-1 flex flex-col items-center overflow-y-auto scrollbar-hide py-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="w-full max-w-[680px] px-2 md:px-0">
           {activeTab === 'lineage' ? (
             <EvolutionTree 
               currentUser={CURRENT_USER}
@@ -195,152 +213,162 @@ export default function App() {
               onSendRequest={handleSendRequest}
             />
           ) : activeTab === 'profile' ? (
+            <div className="w-full">
             <PersonalityProfile 
               currentUser={CURRENT_USER}
               targetUser={viewingUserId === CURRENT_USER.id ? CURRENT_USER : USERS[viewingUserId]}
               users={USERS}
               lineageMap={lineageMap}
             />
+            </div>
           ) : (
-            <>
+            <div className="flex flex-col gap-4 w-full">
               {/* New Post Box */}
-              <div className="bg-white rounded-[32px] p-4 sm:p-6 shadow-md border-b-4 border-slate-100 flex flex-col shrink-0 gap-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <label className="hidden sm:flex w-12 h-12 bg-amber-200 rounded-2xl items-center justify-center text-slate-600 shrink-0 cursor-pointer hover:bg-amber-300 transition-colors">
-                    <ImageIcon className="w-6 h-6" />
-                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                  </label>
-                  
-                  <div className="flex-1 w-full">
-                    <input
+              <div className="bg-white rounded-xl p-3 shadow-sm border border-gray-200 flex flex-col shrink-0">
+                <div className="flex items-center gap-2 mb-3">
+                   <img src={CURRENT_USER.avatarUrl} className="w-10 h-10 rounded-full object-cover shrink-0" alt="Avatar"/>
+                   <input
                       type="text"
-                      placeholder="What's your pet up to today?"
-                      className="w-full bg-slate-50 border-2 border-transparent focus:border-orange-200 focus:bg-white rounded-2xl py-3 px-4 outline-none font-medium text-slate-700 placeholder:text-slate-400 transition-all font-sans"
+                      placeholder={`What's on your mind, ${CURRENT_USER.name}?`}
+                      className="flex-1 bg-[#f0f2f5] hover:bg-[#e4e6e9] rounded-full py-2.5 px-4 outline-none text-[15px] text-[#050505] placeholder:text-gray-500 transition-colors"
                       value={newPostContent}
                       onChange={(e) => setNewPostContent(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleCreatePost()}
-                    />
-                  </div>
-                  
-                  <button 
-                    onClick={handleCreatePost}
-                    disabled={!newPostContent.trim() && !attachedImage}
-                    className="w-full sm:w-auto bg-orange-500 disabled:opacity-50 disabled:hover:bg-orange-500 text-white font-black px-8 py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition-colors shrink-0"
-                  >
-                    POST
-                  </button>
+                   />
+                </div>
+                <div className="border-t border-gray-200 mt-1 pt-3 flex items-center justify-between px-2">
+                   <label className="flex flex-1 items-center justify-center gap-2 hover:bg-[#f0f2f5] p-2 rounded-lg cursor-pointer transition-colors text-gray-500 font-semibold text-[15px]">
+                     <Video className="w-6 h-6 text-[#f3425f]" />
+                     <span className="hidden sm:block">Live video</span>
+                   </label>
+                   <label className="flex flex-1 items-center justify-center gap-2 hover:bg-[#f0f2f5] p-2 rounded-lg cursor-pointer transition-colors text-gray-500 font-semibold text-[15px]">
+                     <ImageIcon className="w-6 h-6 text-[#45bd62]" />
+                     <span className="hidden sm:block">Photo/video</span>
+                     <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                   </label>
+                   <label className="flex flex-1 items-center justify-center gap-2 hover:bg-[#f0f2f5] p-2 rounded-lg cursor-pointer transition-colors text-gray-500 font-semibold text-[15px]">
+                     <Smile className="w-6 h-6 text-[#f7b928]" />
+                     <span className="hidden sm:block">Feeling/activity</span>
+                   </label>
                 </div>
                 
                 {attachedImage && (
-                  <div className="relative rounded-2xl overflow-hidden border-2 border-slate-100 w-fit max-w-full">
-                    <img src={attachedImage} alt="Attached preview" className="max-h-64 object-cover" />
-                    <button onClick={() => setAttachedImage(null)} className="absolute top-2 right-2 p-1.5 bg-white/80 backdrop-blur rounded-full hover:bg-white text-slate-600 transition-colors">
-                      <span className="sr-only">Remove image</span>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  <div className="relative mt-3 rounded-lg overflow-hidden max-h-64 border border-gray-200 mx-2">
+                    <img src={attachedImage} alt="Upload preview" className="w-full h-full object-cover" />
+                    <button 
+                      onClick={() => setAttachedImage(null)}
+                      className="absolute top-2 right-2 bg-gray-900/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-900"
+                    >
+                      ×
                     </button>
                   </div>
+                )}
+                
+                {(newPostContent.trim() || attachedImage) && (
+                  <button 
+                    onClick={handleCreatePost}
+                    className="mt-3 w-full bg-[#0866ff] disabled:opacity-50 text-white font-bold py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Post
+                  </button>
                 )}
               </div>
 
           {/* Feed Cards container container */}
-          <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
-            {posts.map((post, i) => {
+          <div className="flex flex-col gap-4 w-full">
+            {posts.map((post) => {
               const postUser = USERS[post.userId] || CURRENT_USER;
               const isLiked = likedPosts.has(post.id);
-              const cardBorder = i % 2 === 0 ? 'border-amber-200' : 'border-teal-100';
+              const isExpanded = expandedComments.has(post.id);
+              const isAnimating = animatingLikes.has(post.id);
               
               return (
-                <article key={post.id} className={`bg-white rounded-[40px] overflow-hidden shadow-lg border-b-8 ${cardBorder} flex flex-col shrink-0`}>
-                  {post.imageUrl && (
-                    <div className="h-48 sm:h-64 overflow-hidden relative bg-slate-100">
-                      <img src={post.imageUrl} className="w-full h-full object-cover" alt="Post" />
-                    </div>
-                  )}
-                  
-                  <div className="p-4 sm:p-6 flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                       <img onClick={() => viewProfile(postUser.id)} src={postUser.avatarUrl} alt={postUser.name} className="w-12 h-12 rounded-2xl object-cover shrink-0 border-2 border-slate-100 cursor-pointer" />
-                       <div>
-                         <div className="flex items-center gap-2">
-                           <span onClick={() => viewProfile(postUser.id)} className="font-black text-lg sm:text-xl text-slate-800 hover:underline cursor-pointer">{postUser.name}</span>
-                         </div>
-                         <p className="text-xs text-slate-400 font-medium">{postUser.handle} • {post.createdAt}</p>
+                <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col shrink-0 overflow-hidden text-[#050505]">
+                  <div className="p-3 sm:p-4 pb-2">
+                    <div className="flex items-center gap-2 mb-2">
+                       <img onClick={() => viewProfile(postUser.id)} src={postUser.avatarUrl} alt={postUser.name} className="w-10 h-10 rounded-full object-cover shrink-0 cursor-pointer border border-gray-200 hover:opacity-80 transition-opacity" />
+                       <div className="flex flex-col">
+                           <span onClick={() => viewProfile(postUser.id)} className="font-semibold text-[15px] hover:underline cursor-pointer leading-tight">{postUser.name}</span>
+                           <span className="text-[13px] text-gray-500">{post.createdAt}</span>
                        </div>
                     </div>
                     
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 whitespace-pre-wrap font-medium">{post.caption}</p>
+                    <p className="text-[15px] leading-normal mb-2 whitespace-pre-wrap">{post.caption}</p>
+                  </div>
+
+                  {post.imageUrl && (
+                    <div className="w-full bg-gray-100 flex items-center justify-center max-h-[500px] overflow-hidden border-y border-gray-200">
+                      <img src={post.imageUrl} className="w-full object-cover" alt="Post" />
+                    </div>
+                  )}
+                  
+                  <div className="px-4 py-2">
+                    {(post.likes > 0 || isLiked) && (
+                      <div className="flex items-center gap-2 text-gray-500 text-[15px] border-b border-gray-200 pb-2 mb-1">
+                         <div className="w-4 h-4 rounded-full bg-[#0866ff] flex items-center justify-center">
+                           <Heart className="w-2.5 h-2.5 text-white fill-white" />
+                         </div>
+                         <span>{post.likes + (isLiked ? 1 : 0)}</span>
+                      </div>
+                    )}
                     
-                    <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                    <div className="flex gap-1 py-1">
                       <button 
-                        onClick={() => toggleComments(post.id)}
-                        className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl transition-colors ${
-                          expandedComments.has(post.id) ? 'bg-orange-50 text-orange-600' : 'bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-700'
+                        onClick={() => handleLike(post.id)}
+                        className={`flex flex-1 items-center justify-center gap-2 py-1.5 rounded-lg font-semibold text-[15px] hover:bg-gray-100 transition-colors ${
+                          isLiked ? 'text-[#0866ff]' : 'text-gray-500'
                         }`}
                       >
-                        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-                        <span className="font-bold text-xs sm:text-sm">{post.comments.length} <span className="hidden sm:inline">comments</span></span>
+                        <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''} ${isAnimating ? 'animate-bounce' : ''}`} />
+                        Like
                       </button>
                       
-                      <div className="flex items-center gap-2">
-                        <button 
-                          onClick={() => handleLike(post.id)}
-                          className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl transition-colors ${
-                            isLiked ? 'bg-red-50 text-red-500' : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-red-500'
-                          } ${animatingLikes.has(post.id) ? 'animate-heartbeat' : ''}`}
-                        >
-                          <Heart className={`w-5 h-5 sm:w-6 sm:h-6 ${isLiked ? 'fill-current' : ''}`} />
-                          <span className="font-bold text-xs sm:text-sm">{post.likes + (isLiked ? 1 : 0)} <span className="hidden sm:inline">loves</span></span>
-                        </button>
-                        
-                        <button className="hidden sm:flex px-4 py-2 rounded-2xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
-                          <Share2 className="w-6 h-6" />
-                        </button>
-                      </div>
+                      <button 
+                        onClick={() => toggleComments(post.id)}
+                        className="flex flex-1 items-center justify-center gap-2 py-1.5 rounded-lg text-gray-500 font-semibold text-[15px] hover:bg-gray-100 transition-colors"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        Comment
+                      </button>
+                      
+                      <button className="flex flex-1 items-center justify-center gap-2 py-1.5 rounded-lg text-gray-500 font-semibold text-[15px] hover:bg-gray-100 transition-colors">
+                        <Share2 className="w-5 h-5" />
+                        Share
+                      </button>
                     </div>
                     
-                    {expandedComments.has(post.id) && (
-                      <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-4">
-                        {post.comments.length > 0 ? (
-                          <div className="flex flex-col gap-3">
-                            {post.comments.map(comment => {
-                              const commentUser = USERS[comment.userId] || CURRENT_USER;
-                              return (
-                                <div key={comment.id} className="flex gap-3 bg-slate-50/50 p-3 rounded-2xl">
-                                  <img onClick={() => viewProfile(commentUser.id)} src={commentUser.avatarUrl} alt={commentUser.name} className="w-8 h-8 rounded-xl object-cover shrink-0 border border-slate-200 cursor-pointer" />
-                                  <div>
-                                    <div className="flex items-center gap-2">
-                                      <span onClick={() => viewProfile(commentUser.id)} className="font-bold text-sm text-slate-800 hover:underline cursor-pointer">{commentUser.name}</span>
-                                      <span className="text-[10px] text-slate-400 font-medium">{comment.createdAt}</span>
-                                    </div>
-                                    <p className="text-sm text-slate-600 font-medium mt-0.5">{comment.content}</p>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <p className="text-sm text-slate-400 font-medium text-center py-2">No comments yet. Be the first!</p>
-                        )}
-                        
-                        <div className="flex gap-3 items-center mt-2">
-                          <img src={CURRENT_USER.avatarUrl} alt="You" className="w-8 h-8 rounded-xl object-cover shrink-0" />
+                    {isExpanded && (
+                      <div className="pt-2 border-t border-gray-200 mt-1 flex flex-col gap-3">
+                        <div className="flex gap-2 items-center">
+                          <img src={CURRENT_USER.avatarUrl} alt="Avatar" className="w-8 h-8 rounded-full object-cover border border-gray-200" />
                           <div className="flex-1 relative">
                             <input
                               type="text"
-                              placeholder="Write a reply..."
+                              placeholder="Write a comment..."
+                              className="w-full bg-[#f0f2f5] text-[15px] rounded-full py-2 px-4 outline-none text-[#050505] placeholder:text-gray-500"
                               value={commentInputs[post.id] || ''}
                               onChange={(e) => handleCommentChange(post.id, e.target.value)}
                               onKeyDown={(e) => e.key === 'Enter' && submitComment(post.id)}
-                              className="w-full bg-slate-50 border-2 border-slate-100 focus:border-orange-200 focus:bg-white rounded-xl py-2 px-4 outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 transition-all pr-12"
                             />
-                            <button 
-                              onClick={() => submitComment(post.id)}
-                              disabled={!(commentInputs[post.id]?.trim())}
-                              className="absolute right-2 top-1/2 -translate-y-1/2 text-orange-500 font-bold text-sm disabled:opacity-50"
-                            >
-                              Post
-                            </button>
                           </div>
+                        </div>
+                        
+                        <div className="flex flex-col gap-2">
+                          {post.comments.map(comment => {
+                            const commentUser = USERS[comment.userId] || CURRENT_USER;
+                            return (
+                                <div key={comment.id} className="flex gap-2">
+                                  <img onClick={() => viewProfile(commentUser.id)} src={commentUser.avatarUrl} alt={commentUser.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-gray-200 cursor-pointer hover:opacity-80 mt-1" />
+                                  <div className="flex flex-col">
+                                    <div className="bg-[#f0f2f5] rounded-2xl px-3 py-2 w-fit">
+                                      <span onClick={() => viewProfile(commentUser.id)} className="font-semibold text-[13px] text-[#050505] hover:underline cursor-pointer block leading-tight">{commentUser.name}</span>
+                                      <span className="text-[15px] text-[#050505] block leading-tight">{comment.content}</span>
+                                    </div>
+                                    <span className="text-[12px] text-gray-500 px-2 mt-0.5 font-semibold cursor-pointer hover:underline">Like · Reply · {comment.createdAt}</span>
+                                  </div>
+                                </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -349,8 +377,9 @@ export default function App() {
               );
             })}
           </div>
-            </>
+            </div>
           )}
+          </div>
         </div>
 
         {/* Right Sidebar: Community */}
