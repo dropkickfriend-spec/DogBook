@@ -1,0 +1,6 @@
+{
+  "name": "Pet Social Platform",
+  "description": "A social network feed dedicated entirely to pets and their owners.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
